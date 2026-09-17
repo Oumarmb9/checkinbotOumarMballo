@@ -105,13 +105,27 @@ own three times a day (and can also be triggered by hand from the
 
 ## AI Usage
 
-Claude (Anthropic) was used to help design and write this project,
-including the extensions to `practicehub_client.py` (pagination
-iterator, comments, attachment download, the 423 `LockedError`), the
-`checkin_bot.py` logic for Task 1 and Task 2, the duplicate-reply
-signature check, `inspect_api.py`, and the GitHub Actions workflow
-YAML. The original `PracticeHubClient` base class and CRUD methods came
-from my own Mini Project 1. I reviewed and understand every line,
-including the workflow YAML and the cron schedule's timing rationale,
-and verified the API assumptions against the live server using
-`inspect_api.py` before relying on them for the graded schedule.
+**AI-drafted:** Claude (Anthropic) drafted the extensions to
+`practicehub_client.py` (the `iter_all_posts` pagination generator,
+`list_comments`/`create_comment`, `download_attachment`, the 423
+`LockedError`), the `checkin_bot.py` logic for Task 1 and Task 2
+(including the duplicate-reply signature check), `inspect_api.py`, and
+the GitHub Actions workflow YAML.
+
+**Done myself:** the original `PracticeHubClient` base class and CRUD
+methods came from my own Mini Project 1. I registered my Practice Hub
+account, ran `inspect_api.py` against the live server, set up all three
+GitHub Actions secrets/variables, triggered the workflow manually to
+confirm it runs correctly in GitHub's environment, and made all Git
+commits.
+
+**What I changed in the AI-generated code:** Claude's first draft of
+`practicehub_client.py` guessed at the attachment field names (checking
+for `url`, `file_url`, or `path` on each attachment, under one of three
+possible list keys). After I found the official API guide at
+`/docs-guide` and shared it, I had the attachment-handling code in both
+`practicehub_client.py` (the `ATTACHMENT_KEYS` tuple) and
+`checkin_bot.py` (the `collect_posts` function) corrected to use the
+real field names: `download_url` and `filename`, under the single
+`attachments` key. I verified this fix against a live post via
+`inspect_api.py` before trusting it for the scheduled runs.
