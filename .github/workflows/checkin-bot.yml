@@ -1,0 +1,49 @@
+name: Scheduled Check-In Bot
+
+on:
+  # Manual trigger, e.g. for testing from the Actions tab.
+  workflow_dispatch:
+
+  # Three runs a day, spaced well apart and away from 04:00-06:00 UTC
+  # (the window that overlaps midnight Central during daylight time,
+  # where a delayed run risks slipping into the next day's check-in).
+  schedule:
+    - cron: "0 8 * * *"
+    - cron: "0 14 * * *"
+    - cron: "0 20 * * *"
+
+# The default GITHUB_TOKEN can read the repo but not push to it. This
+# grants the write access the "commit artifact/ back" step needs.
+permissions:
+  contents: write
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run check-in bot
+        env:
+          PRACTICE_API_TOKEN: ${{ secrets.PRACTICE_API_TOKEN }}
+          PRACTICE_API_URL: ${{ secrets.PRACTICE_API_URL }}
+          INSTRUCTOR_ID: ${{ vars.INSTRUCTOR_ID }}
+        run: python checkin_bot.py
+
+      - name: Commit artifact/ back to the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add artifact/
+          git diff --cached --quiet || git commit -m "Update artifact [automated run]"
+          git push
