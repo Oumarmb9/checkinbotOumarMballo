@@ -1,0 +1,18 @@
+# artifact/ is INTENTIONALLY not listed here - the assignment requires
+# it to be committed back to the repo by the scheduled workflow.
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Local secrets - never commit your real token
+.env
+
+# OS / editor junk
+.DS_Store
+.vscode/
+.idea/
