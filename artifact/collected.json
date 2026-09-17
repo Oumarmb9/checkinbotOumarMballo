@@ -283,8 +283,8 @@
       ]
     },
     "downloaded_files": [
-      "artifact\\files\\post_24_pandas_quick_reference.md",
-      "artifact\\files\\post_24_sample_scores.csv"
+      "artifact/files/post_24_pandas_quick_reference.md",
+      "artifact/files/post_24_sample_scores.csv"
     ]
   },
   {
@@ -318,7 +318,7 @@
       ]
     },
     "downloaded_files": [
-      "artifact\\files\\post_23_INF601_Syllabus_F2026.pdf"
+      "artifact/files/post_23_INF601_Syllabus_F2026.pdf"
     ]
   },
   {
